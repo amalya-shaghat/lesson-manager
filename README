@@ -1,1 +1,76 @@
-.
+# Lesson Manager
+
+Lesson Manager is a WordPress-based lesson management dashboard built using Elementor, allowing users to create, edit, and delete lessons. The dashboard displays a grid of lessons, including features like a completion chart and dynamic modals for interaction.
+
+## Table of Contents
+1. [Features](#features)
+2. [Technologies](#technologies)
+3. [Installation](#installation)
+4. [Setup](#setup)
+5. [Usage](#usage)
+
+## Features
+
+- **Lesson Management**: Add, edit, and delete lessons.
+- **Dynamic Dashboard**: A grid-based layout displaying lesson information.
+- **Progress Chart**: Displays a visual of completed vs. ongoing lessons.
+- **Responsive Design**: Optimized for mobile and desktop views.
+- **Modals**: Custom modals for adding, editing, and deleting lessons.
+
+## Technologies
+
+- **WordPress**
+- **Elementor**
+- **JavaScript (AJAX)**
+- **Chart.js (for progress chart)**
+
+## Installation
+
+1. **Install WordPress**: Download and set up WordPress on a local or live server.
+2. **Install Plugins**:
+   - **Elementor**: Go to the WordPress Dashboard, navigate to `Plugins > Add New`, search for *Elementor*, and install it.
+   - *(Optional)* **JetEngine**: This plugin simplifies creating custom post types. Install via `Plugins > Add New` if desired.
+
+## Setup
+
+### 1. Custom Post Type (CPT) - "Lessons"
+   - Create a new custom post type called "Lessons" to manage individual lesson records.
+   - You can use JetEngine, CPT UI, or add the code directly in `functions.php`.
+
+### 2. Elementor Dashboard Layout
+   - Create a new page (e.g., “Lesson Dashboard”) and design the layout in Elementor.
+   - Add sections for:
+     - **Progress Chart**
+     - **Add Lesson Button**
+     - **Lesson Cards Grid**
+
+### 3. JavaScript and Modals
+   - Use JavaScript to manage form modals for adding, editing, and deleting lessons.
+   - AJAX will handle data submissions and updates.
+
+### 4. Chart Integration
+   - Use Chart.js or similar to visualize lesson completion rates.
+   - Pull data dynamically from the "Lessons" CPT.
+
+## Usage
+
+- **Add Lessons**: Click the "Add Lesson" button to open a modal for adding new lessons.
+- **Edit Lessons**: Each lesson card has an "Edit" button. Clicking it opens a modal to update lesson details.
+- **Delete Lessons**: The "Delete" button opens a confirmation modal. Confirming deletion removes the lesson.
+
+## Future Enhancements
+
+- Additional fields for lesson description, instructor, duration, etc.
+- More detailed analytics on lesson completion.
+- User-specific dashboards.
+
+## Contributing
+
+Feel free to fork the project and submit pull requests. Please ensure compatibility with the latest WordPress and Elementor versions.
+
+## License
+
+This project is open-source under the MIT License.
+
+---
+
