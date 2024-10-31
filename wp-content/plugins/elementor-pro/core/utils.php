@@ -2,6 +2,7 @@
 namespace ElementorPro\Core;
 
 use ElementorPro\Plugin;
+use ElementorPro\Modules\LoopBuilder\Providers\Taxonomy_Loop_Provider;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -61,7 +62,7 @@ class Utils {
 		];
 
 		foreach ( $server_ip_keys as $key ) {
-			$value = self::_unstable_get_super_global_value( $_SERVER, $key );
+			$value = static::_unstable_get_super_global_value( $_SERVER, $key );
 			if ( $value && filter_var( $value, FILTER_VALIDATE_IP ) ) {
 				return $value;
 			}
@@ -85,7 +86,11 @@ class Utils {
 
 	public static function get_the_archive_url() {
 		$url = '';
-		if ( is_category() || is_tag() || is_tax() ) {
+
+		if ( Taxonomy_Loop_Provider::is_loop_taxonomy_strict() ) {
+			global $wp_query;
+			$url = get_term_link( $wp_query->loop_term );
+		} elseif ( is_category() || is_tag() || is_tax() ) {
 			$url = get_term_link( get_queried_object() );
 		} elseif ( is_author() ) {
 			$url = get_author_posts_url( get_queried_object_id() );
@@ -318,13 +323,18 @@ class Utils {
 	 * @return string
 	 */
 	public static function trim_words( $text, $length ) {
-		if ( $length && str_word_count( $text ) > $length ) {
-			$text = explode( ' ', $text, $length + 1 );
-			unset( $text[ $length ] );
-			$text = implode( ' ', $text );
+		if ( ! $length ) {
+			return $text;
 		}
 
-		return $text;
+		$whitespace_pattern = '/\s+/u';
+		$words = preg_split( $whitespace_pattern, $text, -1, PREG_SPLIT_NO_EMPTY );
+
+		if ( count( $words ) > $length ) {
+			$words = array_slice( $words, 0, $length );
+		}
+
+		return implode( ' ', $words );
 	}
 
 	/**
@@ -371,8 +381,8 @@ class Utils {
 
 		if ( $_FILES === $super_global ) {
 			return isset( $super_global[ $key ]['name'] ) ?
-				self::sanitize_file_name( $super_global[ $key ] ) :
-				self::sanitize_multi_upload( $super_global[ $key ] );
+				static::sanitize_file_name( $super_global[ $key ] ) :
+				static::sanitize_multi_upload( $super_global[ $key ] );
 		}
 
 		return wp_kses_post_deep( wp_unslash( $super_global[ $key ] ) );
@@ -380,7 +390,7 @@ class Utils {
 
 	private static function sanitize_multi_upload( $fields ) {
 		return array_map( function( $field ) {
-			return array_map( 'self::sanitize_file_name', $field );
+			return array_map( [ __CLASS__, 'sanitize_file_name' ], $field );
 		}, $fields );
 	}
 
@@ -406,5 +416,9 @@ class Utils {
 		}
 
 		return $document;
+	}
+
+	public static function format_control_condition( $name, $operator, $value ) {
+		return compact( 'name', 'operator', 'value' );
 	}
 }

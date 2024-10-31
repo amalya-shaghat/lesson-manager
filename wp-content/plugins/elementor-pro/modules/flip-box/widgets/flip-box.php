@@ -167,7 +167,6 @@ class Flip_Box extends Base_Widget {
 				'type' => Controls_Manager::TEXTAREA,
 				'default' => esc_html__( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'elementor-pro' ),
 				'placeholder' => esc_html__( 'Enter your description', 'elementor-pro' ),
-				'separator' => 'none',
 				'dynamic' => [
 					'active' => true,
 				],
@@ -185,16 +184,6 @@ class Flip_Box extends Base_Widget {
 				'name' => 'background_a',
 				'types' => [ 'classic', 'gradient' ],
 				'selector' => '{{WRAPPER}} .elementor-flip-box__front',
-				'fields_options' => [
-					'image' => [
-						'background_lazyload' => [
-							'active' => true,
-							'keys' => [ 'background_a_image', 'url' ],
-							// Using both selectors because the lazy load module supports only a single background control per element.
-							'selector' => '.elementor-flip-box__front, .elementor-flip-box__back',
-						],
-					],
-				],
 			]
 		);
 
@@ -292,7 +281,6 @@ class Flip_Box extends Base_Widget {
 				'type' => Controls_Manager::TEXTAREA,
 				'default' => esc_html__( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'elementor-pro' ),
 				'placeholder' => esc_html__( 'Enter your description', 'elementor-pro' ),
-				'separator' => 'none',
 				'dynamic' => [
 					'active' => true,
 				],
@@ -1497,6 +1485,21 @@ class Flip_Box extends Base_Widget {
 				],
 				'condition' => [
 					'button_text!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'button_hover_transition_duration',
+			[
+				'label' => esc_html__( 'Transition Duration', 'elementor-pro' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 's', 'ms', 'custom' ],
+				'default' => [
+					'unit' => 'ms',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .elementor-flip-box__button' => 'transition-duration: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);

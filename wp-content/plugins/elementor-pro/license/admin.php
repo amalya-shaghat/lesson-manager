@@ -302,7 +302,6 @@ class Admin {
 			API::STATUS_MISSING => esc_html__( 'Missing', 'elementor-pro' ),
 			API::STATUS_REQUEST_LOCKED => esc_html__( 'Request Locked', 'elementor-pro' ),
 		];
-		$license_data['success'] = true;
 
 		echo esc_html__( 'Status', 'elementor-pro' ); ?>:
 		<?php if ( $license_data['success'] ) : ?>

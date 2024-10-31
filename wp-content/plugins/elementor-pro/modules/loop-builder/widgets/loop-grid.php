@@ -7,7 +7,8 @@ use Elementor\Core\Base\Document;
 use ElementorPro\Modules\QueryControl\Controls\Template_Query;
 use ElementorPro\Modules\QueryControl\Module as QueryControlModule;
 use ElementorPro\Modules\LoopBuilder\Documents\Loop as LoopDocument;
-use ElementorPro\Plugin;
+use ElementorPro\Modules\LoopBuilder\Module as LoopBuilderModule;
+use ElementorPro\Modules\Woocommerce\Module as WoocommerceModule;
 use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Text_Shadow;
 use Elementor\Group_Control_Text_Stroke;
@@ -122,6 +123,10 @@ class Loop_Grid extends Base {
 				'condition' => [
 					'posts_per_page!' => 1,
 					'template_id!' => '',
+					'_skin!' => [
+						LoopBuilderModule::LOOP_POST_TAXONOMY_SKIN_ID,
+						WoocommerceModule::LOOP_PRODUCT_TAXONOMY_SKIN_ID,
+					],
 				],
 				'render_type' => 'template',
 				'frontend_available' => true,
@@ -249,9 +254,10 @@ class Loop_Grid extends Base {
 		$repeater->add_control(
 			'column_span_masonry_note',
 			[
-				'type' => Controls_Manager::RAW_HTML,
-				'raw' => esc_html__( 'Note: The Masonry option combined with Column Span might cause unexpected results and break the layout.', 'elementor-pro' ),
-				'content_classes' => 'elementor-panel-alert elementor-panel-alert-warning',
+				// TODO: Remove define() with the release of Elementor 3.22
+				'type' => defined( 'Controls_Manager::ALERT' ) ? Controls_Manager::ALERT : 'alert',
+				'alert_type' => 'warning',
+				'content' => esc_html__( 'Note: The Masonry option combined with Column Span might cause unexpected results and break the layout.', 'elementor-pro' ),
 				'condition' => [
 					'column_span!' => '1',
 				],
@@ -532,18 +538,12 @@ class Loop_Grid extends Base {
 			]
 		);
 
-		$this->add_control(
-			'nothing_found_message_divider',
-			[
-				'type' => Controls_Manager::DIVIDER,
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'nothing_found_message_typography',
 				'selector' => '{{WRAPPER}} .e-loop-nothing-found-message__text',
+				'separator' => 'before',
 			]
 		);
 

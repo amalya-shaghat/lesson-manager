@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.19.0 - 07-02-2024 */
+/*! elementor-pro - v3.21.0 - 20-05-2024 */
 "use strict";
 (self["webpackChunkelementor_pro"] = self["webpackChunkelementor_pro"] || []).push([["elements-handlers"],{
 
@@ -357,7 +357,7 @@ exports["default"] = void 0;
 class _default extends elementorModules.Module {
   constructor() {
     super();
-    ['post', 'product'].forEach(skinName => {
+    ['post', 'product', 'post_taxonomy', 'product_taxonomy'].forEach(skinName => {
       elementorFrontend.elementsHandler.attachHandler('loop-grid', () => __webpack_require__.e(/*! import() | load-more */ "load-more").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/load-more */ "../modules/loop-builder/assets/js/frontend/handlers/load-more.js")), skinName);
       elementorFrontend.elementsHandler.attachHandler('loop-grid', () => __webpack_require__.e(/*! import() | loop */ "loop").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/loop */ "../modules/loop-builder/assets/js/frontend/handlers/loop.js")), skinName);
       elementorFrontend.elementsHandler.attachHandler('loop-carousel', () => __webpack_require__.e(/*! import() | loop */ "loop").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/loop */ "../modules/loop-builder/assets/js/frontend/handlers/loop.js")), skinName);
@@ -666,9 +666,7 @@ class BaseFilterFrontendModule extends elementorModules.Module {
         return {};
       }
       return response.json();
-    })
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .catch(error => {
+    }).catch(() => {
       return {};
     }).then(response => {
       if (!response?.data && '' !== response?.data) {
@@ -1093,12 +1091,12 @@ class _default extends elementorModules.frontend.Document {
     if (!$focusableElements.length) {
       return;
     }
-    let $lastButtonClicked = null;
+    let lastButtonClicked = null;
     if (event?.currentTarget) {
-      $lastButtonClicked = jQuery(event.currentTarget);
+      lastButtonClicked = event.currentTarget;
     }
-    const $lastFocusableElement = $focusableElements[$focusableElements.length - 1];
-    const $firstFocusableElement = $focusableElements[0];
+    const lastFocusableElement = $focusableElements[$focusableElements.length - 1];
+    const firstFocusableElement = $focusableElements[0];
     const onKeyDownPressed = keyDownEvent => {
       const TAB_KEY = 9;
       const isShiftPressed = keyDownEvent.shiftKey;
@@ -1108,25 +1106,25 @@ class _default extends elementorModules.frontend.Document {
       }
       const activeElement = elementorFrontend.elements.window.document.activeElement;
       if (isShiftPressed) {
-        const isFocusOnFirstElement = activeElement === $firstFocusableElement;
+        const isFocusOnFirstElement = activeElement === firstFocusableElement;
         if (isFocusOnFirstElement) {
-          $lastFocusableElement.focus();
+          lastFocusableElement.focus();
           keyDownEvent.preventDefault();
         }
       } else {
-        const isFocusOnLastElement = activeElement === $lastFocusableElement;
+        const isFocusOnLastElement = activeElement === lastFocusableElement;
         if (isFocusOnLastElement) {
-          $firstFocusableElement.focus();
+          firstFocusableElement.focus();
           keyDownEvent.preventDefault();
         }
       }
     };
-    $firstFocusableElement.focus();
+    firstFocusableElement.focus();
     const $window = elementorFrontend.elements.$window;
     $window.on('keydown', onKeyDownPressed).on('elementor/popup/hide', () => {
       $window.off('keydown', onKeyDownPressed);
-      if ($lastButtonClicked) {
-        $lastButtonClicked.focus();
+      if (lastButtonClicked) {
+        lastButtonClicked.focus();
       }
     });
   }
